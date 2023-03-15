@@ -38,7 +38,6 @@ while True:
     confidence_score = prediction[0][index]
 
     # Print prediction and confidence score
-    print(f"'{class_name}'")
     print("Class:", class_name[2:])
     print("Confidence Score:", str(np.round(confidence_score * 100))[:-2], "%")
 
@@ -47,13 +46,13 @@ while True:
     if int(str(np.round(confidence_score * 100))[:-2]) >= 80:
         match class_name[2:]:
             case "Left":
-                move(-10, 0, 0.5)
+                move(-10, 0, 0.125)
             case "Right":
-                move(10, 0, 0.5)
+                move(10, 0, 0.125)
             case "Up":
-                move(0, -10, 0.5)
+                move(0, -10, 0.125)
             case "Down":
-                move(0, 10, 0.5)
+                move(0, 10, 0.125)
             case "Left Click":
                 click(button="left")
             case "Right Click":
