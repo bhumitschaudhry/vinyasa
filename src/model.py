@@ -46,19 +46,17 @@ while True:
     if int(str(np.round(confidence_score * 100))[:-2]) >= 80:
         match class_name[2:]:
             case "Left":
-                move(-10, 0, 0.125)
+                move(-5, 0)
             case "Right":
-                move(10, 0, 0.125)
+                move(5, 0)
             case "Up":
-                move(0, -10, 0.125)
+                move(0, -5)
             case "Down":
-                move(0, 10, 0.125)
+                move(0, 5)
             case "Left Click":
                 click(button="left")
             case "Right Click":
                 click(button="right")
-            case _:
-                print("\n=======UNKONWN=======\n")
 
     # Listen to the keyboard for presses.
     keyboard_input = cv2.waitKey(1)
