@@ -71,4 +71,4 @@ python -m unittest discover tests
 
 ## License
 
-Hobby project / Proof-of-concept.
+MIT License
