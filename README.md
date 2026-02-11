@@ -4,13 +4,14 @@ Vinyasa is a production-grade computer vision application that translates head m
 
 ## Features
 
-- **Professional Interface**: Production-grade, high-DPI aware, dark-themed dashboard built with `customtkinter`. Features a sidebar navigation and real-time telemetry.
+- **Minimalist Design**: Clean, high-DPI aware, light-themed interface built to exact design specifications.
+- **Traffic Light Controls**: Integrated Mac-style traffic light window controls for a sleek aesthetic.
 - **Cross-Platform Compatibility**: Supports Windows, macOS, and Linux with automated hardware backend selection.
 - **Smooth Mouse Control**: Optimized PyAutoGUI integration with zero-latency movement and custom acceleration curves.
 - **Production Architecture**: Modularized Python package structure for high maintainability and scalability.
 - **Calibration Wizard**: Interactive tool to adjust sensitivity and movement range to your personal comfort.
 - **Hotkeys**: Quick toggle tracking with `F10`.
-- **Persistent Settings**: Your configuration and calibration profiles are automatically saved using Pydantic validation.
+- **Persistent Settings**: Your configuration and calibration profiles (Sensitivity, Lines per Second, Cursor Size) are automatically saved using Pydantic validation.
 
 ## Installation
 
@@ -44,8 +45,8 @@ Vinyasa is a production-grade computer vision application that translates head m
     ```bash
     python src/main.py
     ```
-2.  **Start Tracking**: Click the "START TRACKING" button or press `F10`.
-3.  **Calibrate**: Use the "CALIBRATE" button to open the wizard and adjust sensitivity.
+2.  **Start Tracking**: Click the "Start Tracking" button or press `F10`.
+3.  **Calibrate**: Use the "CALIBRATE" button (available in settings) to open the wizard and adjust sensitivity.
 
 ## Technical Details
 
