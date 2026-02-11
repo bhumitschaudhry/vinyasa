@@ -2,6 +2,7 @@ import cv2
 import threading
 import time
 import logging
+import sys
 from typing import Optional, Tuple
 import numpy as np
 
@@ -11,7 +12,23 @@ class Camera:
     def __init__(self, camera_id: int = 0, fps: int = 60):
         self.camera_id = camera_id
         self.fps = fps
-        self.cap = cv2.VideoCapture(self.camera_id)
+        
+        # Select best backend based on platform
+        backend = cv2.CAP_ANY
+        if sys.platform == "win32":
+            backend = cv2.CAP_DSHOW
+        elif sys.platform == "darwin":
+            backend = cv2.CAP_AVFOUNDATION
+        elif sys.platform == "linux":
+            backend = cv2.CAP_V4L2
+            
+        self.cap = cv2.VideoCapture(self.camera_id, backend)
+        
+        # Fallback if specific backend fails
+        if not self.cap.isOpened():
+            logger.warning(f"Failed to open camera with {sys.platform} backend, falling back to CAP_ANY")
+            self.cap = cv2.VideoCapture(self.camera_id, cv2.CAP_ANY)
+            
         self.ret = False
         self.frame: Optional[np.ndarray] = None
         self.running = False

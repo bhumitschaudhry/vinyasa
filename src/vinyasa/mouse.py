@@ -1,5 +1,6 @@
 import pyautogui
 import logging
+import sys
 from typing import Optional
 
 logger = logging.getLogger(__name__)
@@ -42,7 +43,12 @@ class MouseController:
                     self.acceleration = 1.0
                     self.direction_count = 0
         except pyautogui.FailSafeException:
-            logger.warning("PyAutoGUI FailSafe triggered. Mouse moved to corner.")
+            error_msg = "PyAutoGUI FailSafe triggered."
+            if sys.platform == "darwin":
+                error_msg += " On macOS, ensure 'Accessibility' permissions are granted to the terminal/IDE."
+            elif sys.platform == "linux":
+                error_msg += " On Linux, this may fail on Wayland; try switching to X11."
+            logger.error(error_msg)
             
     def click(self, button: str = "left"):
         try:
