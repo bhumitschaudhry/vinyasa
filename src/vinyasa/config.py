@@ -14,6 +14,8 @@ class Config(BaseModel):
     
     # Mouse settings
     INITIAL_SENSITIVITY: int = Field(default=10, ge=1)
+    LINES_PER_SECOND: int = Field(default=1, ge=1)
+    CURSOR_SIZE: int = Field(default=1, ge=1)
     DEFAULT_PAUSE: float = 0.0
     FAILSAFE: bool = True
     
@@ -22,14 +24,15 @@ class Config(BaseModel):
     FPS: int = 60
     
     # UI settings
-    WINDOW_TITLE: str = "Vinyasa - Head Tracking Mouse"
-    WINDOW_SIZE: str = "800x600"
+    WINDOW_TITLE: str = "Vinyasa"
+    WINDOW_SIZE: str = "1000x600"
 
     # Internal
     CONFIG_FILE: Path = Path("config.json")
 
     def save(self):
         try:
+            # We exclude CONFIG_FILE from saving if we want, but pydantic handles it
             with open(self.CONFIG_FILE, "w") as f:
                 f.write(self.model_dump_json(indent=4))
             logger.info("Config saved to file")
@@ -42,7 +45,6 @@ class Config(BaseModel):
         if config_path.exists():
             try:
                 with open(config_path, "r") as f:
-                    # model_validate_json is the modern pydantic v2 way
                     return cls.model_validate_json(f.read())
             except Exception as e:
                 logger.error(f"Failed to load config, using defaults: {e}")
