@@ -4,8 +4,8 @@ Vinyasa is a production-grade computer vision application that translates head m
 
 ## Features
 
+- **Professional Interface**: Production-grade, high-DPI aware, dark-themed dashboard built with `customtkinter`. Features a sidebar navigation and real-time telemetry.
 - **Cross-Platform Compatibility**: Supports Windows, macOS, and Linux with automated hardware backend selection.
-- **Modern UI**: High-DPI aware, dark-themed interface built with `customtkinter`.
 - **Smooth Mouse Control**: Optimized PyAutoGUI integration with zero-latency movement and custom acceleration curves.
 - **Production Architecture**: Modularized Python package structure for high maintainability and scalability.
 - **Calibration Wizard**: Interactive tool to adjust sensitivity and movement range to your personal comfort.
