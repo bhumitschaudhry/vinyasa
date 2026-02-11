@@ -2,8 +2,10 @@ import unittest
 from unittest.mock import patch, MagicMock
 import sys
 
-# Mock tensorflow to avoid import errors in environment without it
+# Mock dependencies to avoid import errors in environment without them
 sys.modules['tensorflow'] = MagicMock()
+sys.modules['customtkinter'] = MagicMock()
+sys.modules['darkdetect'] = MagicMock()
 
 from vinyasa.mouse import MouseController
 

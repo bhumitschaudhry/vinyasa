@@ -4,8 +4,10 @@ import json
 import sys
 from unittest.mock import MagicMock
 
-# Mock tensorflow
+# Mock dependencies
 sys.modules['tensorflow'] = MagicMock()
+sys.modules['customtkinter'] = MagicMock()
+sys.modules['darkdetect'] = MagicMock()
 
 from vinyasa.config import Config
 
@@ -26,7 +28,7 @@ class TestConfig(unittest.TestCase):
         config.INITIAL_SENSITIVITY = 25
         config.save()
         
-        new_config = Config()
+        new_config = Config.load()
         self.assertEqual(new_config.INITIAL_SENSITIVITY, 25)
 
 if __name__ == '__main__':
