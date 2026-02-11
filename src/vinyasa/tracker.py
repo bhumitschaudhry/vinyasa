@@ -1,3 +1,8 @@
+"""
+Model inference module for head position tracking.
+Handles loading the Keras model and performing predictions on camera frames.
+"""
+
 import cv2
 import numpy as np
 import logging
@@ -13,16 +18,24 @@ except ImportError:
     logger.warning("TensorFlow not found. HeadTracker will not work.")
 
 class HeadTracker:
+    """
+    Handles ML model loading and inference for head tracking.
+    """
     def __init__(self, model_path: Path, labels_path: Path):
+        """
+        Initialize the tracker and load the model.
+        
+        Args:
+            model_path: Path to the .h5 or .keras model file.
+            labels_path: Path to the text file containing class labels.
+        """
         if tf is None:
             raise ImportError("TensorFlow is required to use HeadTracker")
         
         self.model_path = Path(model_path)
         try:
-            # Modernize: Check for .keras first or load .h5
-            # In a real scenario, we might want to migrate .h5 to .keras here
             self.model = tf.keras.models.load_model(self.model_path, compile=False)
-            logger.info(f"Model loaded from {self.model_path}")
+            logger.info(f"Model loaded successfully from {self.model_path}")
             
             self.labels = self._load_labels(Path(labels_path))
         except Exception as e:
@@ -30,6 +43,7 @@ class HeadTracker:
             raise
 
     def _load_labels(self, path: Path) -> List[str]:
+        """Loads and cleans labels from a labels.txt file."""
         labels = []
         with open(path, "r") as f:
             for line in f:
@@ -41,13 +55,25 @@ class HeadTracker:
         return labels
 
     def preprocess(self, image: np.ndarray) -> np.ndarray:
+        """
+        Prepares a raw image frame for model inference.
+        Resizes to 224x224 and normalizes pixel values.
+        """
         img = cv2.resize(image, (224, 224), interpolation=cv2.INTER_AREA)
         img = np.asarray(img, dtype=np.float32).reshape(1, 224, 224, 3)
+        # Normalize image to [-1, 1]
         img = (img / 127.5) - 1
         return img
 
     def predict(self, image: np.ndarray) -> Tuple[str, float]:
+        """
+        Performs inference on an image and returns the predicted label and confidence.
+        
+        Returns:
+            A tuple of (label_string, confidence_float).
+        """
         processed_img = self.preprocess(image)
+        # Call model directly for faster inference than .predict()
         prediction = self.model(processed_img, training=False).numpy()
         index = np.argmax(prediction)
         confidence = prediction[0][index]

@@ -1,3 +1,8 @@
+"""
+Configuration management module using Pydantic.
+Handles validation and persistence of application settings.
+"""
+
 from pydantic import BaseModel, Field
 from pathlib import Path
 import logging
@@ -6,6 +11,11 @@ from typing import ClassVar
 logger = logging.getLogger(__name__)
 
 class Config(BaseModel):
+    """
+    Data model for all Vinyasa settings.
+    Includes model paths, hardware IDs, and UX preferences.
+    """
+    
     # Model settings
     MODEL_PATH: Path = Path("model/keras_model.h5")
     LABELS_PATH: Path = Path("model/labels.txt")
@@ -27,25 +37,31 @@ class Config(BaseModel):
     WINDOW_TITLE: str = "Vinyasa"
     WINDOW_SIZE: str = "1000x600"
 
-    # Internal
-    CONFIG_FILE: Path = Path("config.json")
+    # Internal persistence
+    CONFIG_FILE: ClassVar[Path] = Path("config.json")
 
     def save(self):
+        """Persists current settings to config.json."""
         try:
-            # We exclude CONFIG_FILE from saving if we want, but pydantic handles it
             with open(self.CONFIG_FILE, "w") as f:
                 f.write(self.model_dump_json(indent=4))
-            logger.info("Config saved to file")
+            logger.info("Configuration saved successfully")
         except Exception as e:
-            logger.error(f"Failed to save config: {e}")
+            logger.error(f"Failed to save configuration: {e}")
 
     @classmethod
     def load(cls) -> "Config":
+        """
+        Loads settings from config.json if it exists, otherwise returns defaults.
+        
+        Returns:
+            An instance of Config.
+        """
         config_path = Path("config.json")
         if config_path.exists():
             try:
                 with open(config_path, "r") as f:
                     return cls.model_validate_json(f.read())
             except Exception as e:
-                logger.error(f"Failed to load config, using defaults: {e}")
+                logger.error(f"Failed to load configuration, using defaults: {e}")
         return cls()
